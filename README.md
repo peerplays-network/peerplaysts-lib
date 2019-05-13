@@ -1,12 +1,12 @@
-# PeerplaysJS (peerplaysjs-lib)
+# PeerplaysTS (peerplaysts-lib)
 
-Pure JavaScript Bitshares/Graphene library for node.js and browsers. Can be used to construct, sign and broadcast transactions in JavaScript, and to easily obtain data from the blockchain via public apis.
+Pure TypeScript Bitshares/Graphene library for node.js and browsers. Can be used to construct, sign and broadcast transactions in TypeScript, and to easily obtain data from the blockchain via public apis.
 
 Most of this code was written by [jcalfee](https://github.com/jcalfee).
 
-[![npm version](https://img.shields.io/npm/v/peerplaysjs-lib.svg?style=flat-square)](https://www.npmjs.com/package/peerplaysjs-lib)
-[![npm version](https://img.shields.io/node/v/peerplaysjs-lib.svg?style=flat-square)](https://www.npmjs.com/package/peerplaysjs-lib)
-[![npm downloads](https://img.shields.io/npm/dm/peerplaysjs-lib.svg?style=flat-square)](https://www.npmjs.com/package/peerplaysjs-lib)
+[![npm version](https://img.shields.io/npm/v/peerplaysts-lib.svg?style=flat-square)](https://www.npmjs.com/package/peerplaysts-lib)
+[![npm version](https://img.shields.io/node/v/peerplaysts-lib.svg?style=flat-square)](https://www.npmjs.com/package/peerplaysts-lib)
+[![npm downloads](https://img.shields.io/npm/dm/peerplaysts-lib.svg?style=flat-square)](https://www.npmjs.com/package/peerplaysts-lib)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) 
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
@@ -15,12 +15,12 @@ Most of this code was written by [jcalfee](https://github.com/jcalfee).
 This library can be obtained through npm:
 
 ```bash
-npm install peerplaysjs-lib
+npm install peerplaysts-lib
 ```
 
 ## Getting Started
 
-It is recommended to use Node v8.9.x.
+It is recommended to use Node LTS (10.15.3).
 
 On Ubuntu and OSX, the easiest way to install Node is to use the [Node Version Manager](https://github.com/creationix/nvm).
 For Windows users there is [NVM-Windows](https://github.com/coreybutler/nvm-windows).
@@ -29,15 +29,15 @@ To install NVM for Linux/OSX, simply copy paste the following in a terminal:
 
 ```bash
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.30.2/install.sh | bash
-nvm install v8
-nvm use v8
+nvm install v10.15.3
+nvm use v10.15.3
 ```
 
 Once you have Node installed, you can clone the repo:
 
 ```bash
-git clone https://github.com/peerplays-network/peerplaysjs-lib
-cd peerplaysjs-lib
+git clone https://github.com/peerplays-network/peerplaysts-lib
+cd peerplaysts-lib
 ```
 
 ## Development
@@ -70,35 +70,12 @@ The following tools are used:
 Four sub-libraries are included: `ECC`, `Chain`, `WS` and `Serializer`. Generally only the `ECC` and `Chain` libraries need to be used directly. The `WS` library handles all the websocket connections.
 
 ### WS
-
-<details>
-
-<summary>peerplaysjs-ws is deprecated</summary>
-
-Peerplaysjs-lib includes the now deprecated peerplaysjs-ws library within itself. Updating your code to reflect this is simple, here is an example:
-
-```javascript
-// current code
-import {Apis} from 'peerplaysjs-ws';
-
-// refactored
-import {Apis} from 'peerplaysjs-lib';
-```
-
-Once you have all of your peerplaysjs-ws imports updated, you can uninstall the peerplaysjs-ws package.
-</details>
-
-
-```html
-<script type="text/javascript" src="https://cdn.rawgit.com/pbsa/peerplaysjs-ws/build/peerplaysjs-ws.js" />
-```
-
 A variable peerplays_ws will be available in window.
 
 For use in a webpack/browserify context, see the example below for how to open a websocket connection to the Openledger API and subscribe to any object updates:
 
-```javascript
-var {Apis} = require("peerplaysjs-lib");
+```typescript
+var {Apis} = require("peerplaysts-lib");
 Apis.instance("wss://bitshares.openledger.info/ws").init_promise.then((res) => {
     console.log("connected to:", res[0].network);
     Apis.instance().db_api().exec( "set_subscribe_callback", [ updateListener, true ] )
@@ -125,7 +102,7 @@ keySeed = accountName + role + password
 
 Using this seed, private keys are generated for either the default roles `active, owner, memo`, or as specified. A minimum password length of 12 characters is enforced, but an even longer password is recommended. Three methods are provided:
 
-```js
+```typescript
 generateKeys(account, password, [roles])
 checkKeys(account, password, auths)
 signTransaction(tr)
@@ -149,9 +126,9 @@ The Chain library contains a complete state container called the ChainStore. The
 
 The ChainStore has several useful methods to retrieve, among other things, objects, assets and accounts using either object ids or asset/account names. These methods are synchronous and will return `undefined` to indicate fetching in progress, and `null` to indicate that the object does not exist.
 
-```js
-import {Apis} from "peerplaysjs-ws";
-import {ChainStore} from "peerplaysjs-lib";
+```typescript
+import {Apis} from "peerplaysts-ws";
+import {ChainStore} from "peerplaysts-lib";
 
 Apis.instance("wss://bitshares.openledger.info/ws", true).init_promise.then((res) => {
     console.log("connected to:", res[0].network);
@@ -176,8 +153,8 @@ The ECC library contains all the crypto functions for private and public keys as
 
 As a quick example, here's how to generate a new private key from a seed (a brainkey for example):
 
-```js
-import {PrivateKey, key} from "peerplaysjs-lib";
+```typescript
+import {PrivateKey, key} from "peerplaysts-lib";
 
 let seed = "THIS IS A TERRIBLE BRAINKEY SEED WORD SEQUENCE";
 let pkey = PrivateKey.fromSeed( key.normalize_brainKey(seed) );
