@@ -40,7 +40,7 @@ class AccountLogin {
     let privKeys: IntVerboseObject = {};
     let pubKeys: IntVerboseObject = {};
 
-    (roles || this.get('roles')).forEach((role) => {
+    (roles || this.get('roles')).forEach((role: string) => {
       let seed = password + accountName + role;
       let pkey = _keyCachePriv[seed]
         ? _keyCachePriv[seed]
@@ -56,7 +56,7 @@ class AccountLogin {
     return {privKeys, pubKeys};
   }
 
-  checkKeys({accountName, password, auths}: IntCheckKeys) {
+  checkKeys({accountName, password, auths}: IntCheckKeys): boolean {
     if (!accountName || !password || !auths) {
       throw new Error('checkKeys: Missing inputs');
     }
