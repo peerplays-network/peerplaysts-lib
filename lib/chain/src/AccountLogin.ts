@@ -3,15 +3,14 @@ import key from '../../ecc/src/KeyUtils';
 
 import {get, set} from './state';
 
-let _keyCachePriv = {};
-let _keyCachePub = {};
+let _keyCachePriv: IntVerboseObject, _keyCachePub: IntVerboseObject;
 
 class AccountLogin {
   get: any;
   set: any;
   subs: any;
   constructor() {
-    let state: IntState = {
+    let state: IntAccountState = {
       loggedIn: false,
       roles: ['active', 'owner', 'memo']
     };
@@ -25,11 +24,11 @@ class AccountLogin {
     this.subs[cb] = cb;
   }
 
-  setRoles(roles: IntState['roles']) {
+  setRoles(roles: IntAccountState['roles']) {
     this.set('roles', roles);
   }
 
-  generateKeys(accountName: IntGenKeys['accountName'], password: IntGenKeys['password'], roles: IntGenKeys['roles'], prefix: IntGenKeys['prefix']) {
+  generateKeys(accountName: IntGenKeys['accountName'], password: IntGenKeys['password'], roles: IntGenKeys['roles'], prefix?: IntGenKeys['prefix']) {
     if (!accountName || !password) {
       throw new Error('Account name or password required');
     }
@@ -38,16 +37,16 @@ class AccountLogin {
       throw new Error('Password must have at least 12 characters');
     }
 
-    let privKeys = {};
-    let pubKeys = {};
+    let privKeys: IntVerboseObject = {};
+    let pubKeys: IntVerboseObject = {};
 
     (roles || this.get('roles')).forEach((role) => {
       let seed = password + accountName + role;
       let pkey = _keyCachePriv[seed]
         ? _keyCachePriv[seed]
         : PrivateKey.fromSeed(key.normalize_brainKey(seed));
-      _keyCachePriv[seed] = pkey;
 
+      _keyCachePriv[seed] = pkey;
       privKeys[role] = pkey;
       pubKeys[role] = _keyCachePub[seed] ? _keyCachePub[seed] : pkey.toPublicKey().toString(prefix);
 
@@ -57,7 +56,7 @@ class AccountLogin {
     return {privKeys, pubKeys};
   }
 
-  checkKeys({accountName, password, auths}) {
+  checkKeys({accountName, password, auths}: IntCheckKeys) {
     if (!accountName || !password || !auths) {
       throw new Error('checkKeys: Missing inputs');
     }
@@ -68,12 +67,20 @@ class AccountLogin {
     for (let i = 0, len = roles.length; i < len; i++) {
       let role = roles[i];
       let {privKeys, pubKeys} = this.generateKeys(accountName, password, [role]);
-      auths[role].forEach((roleKey) => {
-        if (roleKey[0] === pubKeys[role]) {
+      let entries = Object.entries(auths);
+      // TODO: confirm changes do not break
+      for (let [key] of entries) {
+        if (key === pubKeys[role]) {
           hasKey = true;
           this.set(role, {priv: privKeys[role], pub: pubKeys[role]});
         }
-      });
+      }
+      // auths[role].forEach((roleKey) => {
+      //   if (roleKey[0] === pubKeys[role]) {
+      //     hasKey = true;
+      //     this.set(role, {priv: privKeys[role], pub: pubKeys[role]});
+      //   }
+      // });
     }
 
     if (hasKey) {
