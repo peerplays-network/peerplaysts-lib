@@ -1,9 +1,9 @@
-function get(state): string {
-  return key => state[key] || '';
+function get(state: IntAccountState) {
+  return (key: string) => state[key] || "";
 }
 
-function set(state) {
-  return (key: string, value: string) => {
+function set(state: IntAccountState) {
+  return (key: string, value: boolean | Array<string>) => {
     state[key] = value;
     return this;
   };
