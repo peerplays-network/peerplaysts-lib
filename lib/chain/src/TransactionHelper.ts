@@ -6,6 +6,7 @@ import {Apis} from '../../ws';
 import {Signature} from '../../ecc';
 import {ops, types} from '../../serializer';
 
+
 const helper = {
   unique_nonce_entropy: null,
   unique_nonce_uint64() {

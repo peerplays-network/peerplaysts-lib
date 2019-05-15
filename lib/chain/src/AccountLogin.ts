@@ -7,23 +7,29 @@ let _keyCachePriv = {};
 let _keyCachePub = {};
 
 class AccountLogin {
+  get: any;
+  set: any;
+  subs: any;
   constructor() {
-    let state = {loggedIn: false, roles: ['active', 'owner', 'memo']};
+    let state: IntState = {
+      loggedIn: false,
+      roles: ['active', 'owner', 'memo']
+    };
     this.get = get(state);
     this.set = set(state);
 
     this.subs = {};
   }
 
-  addSubscription(cb) {
+  addSubscription(cb: string | number) {
     this.subs[cb] = cb;
   }
 
-  setRoles(roles) {
+  setRoles(roles: IntState['roles']) {
     this.set('roles', roles);
   }
 
-  generateKeys(accountName, password, roles, prefix) {
+  generateKeys(accountName: IntGenKeys['accountName'], password: IntGenKeys['password'], roles: IntGenKeys['roles'], prefix: IntGenKeys['prefix']) {
     if (!accountName || !password) {
       throw new Error('Account name or password required');
     }
