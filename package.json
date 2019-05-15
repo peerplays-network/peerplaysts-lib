@@ -19,6 +19,7 @@
     "test:ecc": "BABEL_ENV=test mocha --compilers js:babel-register ./test/ecc --recursive",
     "test:serializer": "BABEL_ENV=test mocha --compilers js:babel-register ./test/serializer --recursive",
     "test:watch": "npm test -- --watch",
+    "sonar": "node scripts/sonar.js",
     "clean": "rm -rf ./dist/* & rm -rf ./build/*",
     "prebuild": "npm run clean",
     "build": "babel lib -d dist",
@@ -66,6 +67,7 @@
     "esdoc-standard-plugin": "^1.0.0",
     "event-emitter": "^0.3.4",
     "immutable": "^3.7.6",
+    "inquirer": "^6.3.1",
     "secure-random": "^1.1.1",
     "uglify-js": "^3.5.2",
     "ws": "2.3.1"

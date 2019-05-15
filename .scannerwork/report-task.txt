@@ -1,0 +1,7 @@
+organization=peerplays-network
+projectKey=peerplays-network_peerplaysts-lib
+serverUrl=https://sonarcloud.io
+serverVersion=7.8.0.24676
+dashboardUrl=https://sonarcloud.io/dashboard?id=peerplays-network_peerplaysts-lib
+ceTaskId=AWq471PzAki0z6x-6o1p
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AWq471PzAki0z6x-6o1p
