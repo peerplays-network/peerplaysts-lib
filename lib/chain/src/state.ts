@@ -1,9 +1,9 @@
-function get(state) {
+function get(state): string {
   return key => state[key] || '';
 }
 
 function set(state) {
-  return (key, value) => {
+  return (key: string, value: string) => {
     state[key] = value;
     return this;
   };
