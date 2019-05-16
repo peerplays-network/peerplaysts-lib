@@ -10,7 +10,7 @@ let MIN_SAFE_INT = -9007199254740991;
     Validations support a string format for dealing with large numbers.
 */
 const _my = {
-  is_empty(value) {
+  is_empty(value: any) {
     return value === null || value === undefined;
   },
 

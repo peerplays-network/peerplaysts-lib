@@ -14,7 +14,14 @@ let MAX_SIGNED_32 = Math.pow(2, 31) - 1;
 
 const HEX_DUMP = process.env.npm_config__graphene_serializer_hex_dump;
 
-let strCmp = (a, b) => {
+/**
+ * alphabetical/numerical sort of past in values
+ * 
+ * @param {number | string} a
+ * @param {number | string} b
+ * @return {number} 
+ */
+let strCmp = (a: number | string, b: number | string) => {
   let result = 0;
 
   if (a > b) {

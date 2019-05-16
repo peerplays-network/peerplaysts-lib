@@ -1,16 +1,22 @@
 import BigInteger from 'bigi';
 import v from './SerializerValidation';
 
+
+interface Int_To_long64 {
+  number_or_string: number | string
+  precision: number,
+  error_info?: string
+}
 // _internal is for low-level transaction code
 const _internal = {
   // Warning: Long operations may over-flow without detection
-  to_long64(number_or_string, precision, error_info = '') {
+  to_long64(number_or_string: Int_To_long64['number_or_string'], precision: Int_To_long64['precision'], error_info?: Int_To_long64['error_info']) {
     v.required(number_or_string, `number_or_string ${error_info}`);
     v.required(precision, `precision ${error_info}`);
     return v.to_long(_internal.decimal_precision_string(number_or_string, precision, error_info));
   },
 
-  decimal_precision_string(number, precision, error_info = '') {
+  decimal_precision_string(number: Int_To_long64['number_or_string'], precision: Int_To_long64['precision'], error_info: Int_To_long64['error_info']) {
     v.required(number, `number ${error_info}`);
     v.required(precision, `precision ${error_info}`);
 
@@ -72,15 +78,15 @@ const _my = {
   // "1.01" with a precision of 2 returns long 101
   // See http://cryptocoinjs.com/modules/misc/bigi/#example
 
-  to_bigint64(number_or_string, precision, error_info = '') {
+  to_bigint64(number_or_string: Int_To_long64['number_or_string'], precision: Int_To_long64['precision'], error_info?: Int_To_long64['error_info']) {
     let long = _internal.to_long64(number_or_string, precision, error_info);
-    return BigInteger(long.toString());
+    return BigInt(long.toString());
   },
 
   // 101 string or long with a precision of 2 returns "1.01"
-  to_string64(number_or_string, precision, error_info = '') {
+  to_string64(number_or_string: Int_To_long64['number_or_string'], precision: Int_To_long64['precision'], error_info?: Int_To_long64['error_info']) {
     v.required(number_or_string, error_info);
-    v.number(precision, error_info);
+    v.number(precision);
     let number_long = v.to_long(number_or_string, error_info);
     let string64 = _internal.decimal_precision_string(number_long, precision, error_info);
     v.no_overflow64(string64, error_info);

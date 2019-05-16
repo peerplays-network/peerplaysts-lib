@@ -1,7 +1,7 @@
 import PublicKey from '../../ecc/src/PublicKey';
 
 class FastParser {
-  static fixed_data(b, len, buffer) {
+  static fixed_data(b: Buffer, len: number, buffer?: Buffer) {
     if (!b) {
       return;
     }
@@ -32,7 +32,7 @@ class FastParser {
     }
   }
 
-  static ripemd160(b, ripemd160) {
+  static ripemd160(b: Buffer, ripemd160?: string | Buffer) {
     if (!b) {
       return;
     }
@@ -43,7 +43,7 @@ class FastParser {
     }
   }
 
-  static sha256(b, sha256) {
+  static sha256(b, sha256: string | Buffer) {
     if (!b) {
       return;
     }

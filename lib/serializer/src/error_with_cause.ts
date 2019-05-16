@@ -1,22 +1,32 @@
 /** Exception nesting.  */
+
+interface IntConstructor {
+  message: string, 
+  cause: { message: string; stack: string; }
+}
+
+interface IntThrow {
+  message: string, 
+  cause: { message: string; stack: string; }
+}
 class ErrorWithCause {
-  constructor(message, cause) {
-    this.message = message;
+  constructor(message: IntConstructor['message'], cause: IntConstructor['cause']) {
+    message = message;
 
     if (typeof cause !== 'undefined' && cause !== null ? cause.message : undefined) {
-      this.message = `cause\t${cause.message}\t${this.message}`;
+      message = `cause\t${cause.message}\t${message}`;
     }
 
-    let stack = ''; // (new Error).stack
+    let stack:string = ''; // (new Error).stack
 
     if (typeof cause !== 'undefined' && cause !== null ? cause.stack : undefined) {
       stack = `caused by\n\t${cause.stack}\t${stack}`;
     }
 
-    this.stack = `${this.message}\n${stack}`;
+    stack = `${message}\n${stack}`;
   }
 
-  static throw(message, cause) {
+  static throw(message: IntThrow['message'], cause: IntThrow['cause']) {
     let msg = message;
 
     if (typeof cause !== 'undefined' && cause !== null ? cause.message : undefined) {

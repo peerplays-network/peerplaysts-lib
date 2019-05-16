@@ -1,5 +1,10 @@
 /** Console print any transaction object with zero default values. */
-export default function template(op) {
+interface IntTemplate {
+  [op: string]: any
+}
+
+export default function template(op: IntTemplate['op']) {
+  op.toObject()
   let object = op.toObject(undefined, {use_default: true, annotate: true});
 
   // visual (with descriptions)

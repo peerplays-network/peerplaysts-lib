@@ -1,22 +1,64 @@
 import ByteBuffer from 'bytebuffer';
 import EC from './error_with_cause';
+import { stringify } from 'querystring';
 
 const HEX_DUMP = process.env.npm_config__graphene_serializer_hex_dump;
 
+interface IntSerializerConstructor {
+  operation_name: string,
+  types: { [x: string]: any; },
+  keys: { [x: string]: any; }
+}
+
+interface IntFromHex {
+  hex: string;
+};
+
+interface IntToHex {
+  object: object;
+};
+
+interface IntFromBuffer {
+  buffer: object;
+};
+
+interface IntToBuffer {
+  object: object;
+};
+
+interface IntCompare {
+  a: { [x: string]: any; },
+  b: { [x: string]: any; }
+}
+
+interface IntOperation {
+  operation: string;
+}
+
+interface IntByteBuffer {
+  b: ByteBuffer,
+  object: { [x: string]: any; }
+}
 class Serializer {
-  constructor(operation_name, types) {
+  //field
+  keys: IntSerializerConstructor['keys'];
+  types: IntSerializerConstructor['types'];
+  operation_name: IntOperation['operation'];
+  //constructor
+  constructor(operation_name: IntSerializerConstructor['operation_name'], types: IntSerializerConstructor['types']) {
     this.operation_name = operation_name;
     this.types = types;
-
-    if (this.types) {
-      this.keys = Object.keys(this.types);
+    
+    if (types) {
+      this.keys = Object.keys(types);
     }
-
+    //unclear how this works
     Serializer.printDebug = true;
   }
 
-  fromByteBuffer(b) {
-    let object = {};
+  fromByteBuffer(b: ByteBuffer) {
+    let object:{ [x: string]: any; };
+    object = {['']:''}
     let field = null;
 
     try {
@@ -58,7 +100,7 @@ class Serializer {
     return object;
   }
 
-  appendByteBuffer(b, object) {
+  appendByteBuffer(b: IntByteBuffer['b'], object: IntByteBuffer['object']) {
     let field = null;
 
     try {
@@ -79,8 +121,8 @@ class Serializer {
     }
   }
 
-  fromObject(serialized_object) {
-    let result = {};
+  fromObject(serialized_object: { [x: string]: any; }) {
+    let result = [];
     let field = null;
 
     try {
@@ -106,8 +148,8 @@ class Serializer {
         @arg {boolean} [debug.use_default = false] - more template friendly
         @arg {boolean} [debug.annotate = false] - add user-friendly information
     */
-  toObject(serialized_object = {}, debug = {use_default: false, annotate: false}) {
-    let result = {};
+  toObject(serialized_object: { [x: string]: any; }, debug = {use_default: false, annotate: false}) {
+    let result = ['',''];
     let field = null;
 
     try {
@@ -148,7 +190,7 @@ class Serializer {
   }
 
   /** Sort by the first element in a operation */
-  compare(a, b) {
+  compare(a: IntCompare['a'], b: IntCompare['b']) {
     let first_key = this.keys[0];
     let first_type = this.types[first_key];
 
@@ -189,29 +231,29 @@ class Serializer {
 
   // <helper_functions>
 
-  fromHex(hex) {
+  fromHex(hex: IntFromHex['hex']) {
     let b = ByteBuffer.fromHex(hex, ByteBuffer.LITTLE_ENDIAN);
     return this.fromByteBuffer(b);
   }
 
-  fromBuffer(buffer) {
+  fromBuffer(buffer: IntFromBuffer['buffer']) {
     let b = ByteBuffer.fromBinary(buffer.toString('binary'), ByteBuffer.LITTLE_ENDIAN);
     return this.fromByteBuffer(b);
   }
 
-  toHex(object) {
+  toHex(object: IntToHex['object']) {
     // return this.toBuffer(object).toString("hex")
     let b = this.toByteBuffer(object);
     return b.toHex();
   }
 
-  toByteBuffer(object) {
+  toByteBuffer(object: IntToBuffer['object']) {
     let b = new ByteBuffer(ByteBuffer.DEFAULT_CAPACITY, ByteBuffer.LITTLE_ENDIAN);
     this.appendByteBuffer(b, object);
     return b.copy(0, b.offset);
   }
 
-  toBuffer(object) {
+  toBuffer(object: IntToBuffer['object']) {
     return Buffer.from(this.toByteBuffer(object).toBinary(), 'binary');
   }
 }
