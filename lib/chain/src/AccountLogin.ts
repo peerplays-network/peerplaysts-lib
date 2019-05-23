@@ -68,6 +68,7 @@ class AccountLogin {
       let role = roles[i];
       let {privKeys, pubKeys} = this.generateKeys(accountName, password, [role]);
       let entries = Object.entries(auths);
+
       // TODO: confirm changes do not break
       for (let [key] of entries) {
         if (key === pubKeys[role]) {

@@ -195,7 +195,7 @@ class TransactionBuilder {
     assert(operation, 'operation');
     let _type = ops[name];
     assert(_type, `Unknown operation ${name}`);
-    let operation_id = ChainTypes.operations[_type.operation_name];
+    let operation_id = ChainTypes.Operations[_type.operation_name];
 
     if (operation_id === undefined) {
       throw new Error(`unknown operation: ${_type.operation_name}`);

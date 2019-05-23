@@ -1,11 +1,11 @@
 interface IntVerboseObject {
-  [index: string]: string
+  [index: string]: string;
 }
 
 interface IntAccountState {
   loggedIn: boolean;
-  roles: Array<string>;
-  [key: string]: boolean | Array<string>;
+  roles: string[];
+  [key: string]: boolean | string[];
 }
 
 interface IntGenKeys {
@@ -25,6 +25,6 @@ interface IntAuths {
 interface IntCheckKeys {
   accountName: string;
   password: string;
-  auths: IntAuths
+  auths: IntAuths;
 }
 

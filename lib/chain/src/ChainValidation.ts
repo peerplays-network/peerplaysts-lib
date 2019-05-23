@@ -7,6 +7,11 @@
 let id_regex = /\b\d+\.\d+\.(\d+)\b/;
 
 const ChainValidation = {
+  /**
+   * 
+   * @param value : name_or_id
+   * @param {boolean} allow_too_short 
+   */
   is_account_name(value, allow_too_short = false) {
     let label;
     let ref;

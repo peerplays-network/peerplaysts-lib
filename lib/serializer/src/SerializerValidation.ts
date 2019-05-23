@@ -204,23 +204,23 @@ const _my = {
     return value;
   },
 
-  require_object_type(reserved_spaces = 1, type, value, field_name = '') {
+  require_object_type(ReservedSpaces = 1, type, value, field_name = '') {
     if (this.is_empty(value)) {
       return value;
     }
 
-    let object_type = ChainTypes.object_type[type];
+    let object_type = ChainTypes.ObjectType[type];
 
     if (!object_type) {
       throw new Error(`Unknown object type ${type} ${field_name} ${value}`);
     }
 
-    let re = new RegExp(`${reserved_spaces}\.${object_type}\.[0-9]+$`);
+    let re = new RegExp(`${ReservedSpaces}\.${object_type}\.[0-9]+$`);
 
     if (!re.test(value)) {
       throw new Error(
         `Expecting ${type} in format `
-          + `${reserved_spaces}.${object_type}.[0-9]+ `
+          + `${ReservedSpaces}.${object_type}.[0-9]+ `
           + `instead of ${value} ${field_name} ${value}`
       );
     }
@@ -281,7 +281,8 @@ const _my = {
     }
 
     let type_id = this.get_protocol_type(value, field_name);
-    return Object.keys(ChainTypes.object_type)[type_id];
+    // TODO: this probably breaks
+    return Object.keys(ChainTypes.ObjectType)[type_id];
   },
 
   require_implementation_type(type, value, field_name) {

@@ -1,10 +1,10 @@
-const reserved_spaces = {
+const ReservedSpaces = {
   relative_protocol_ids: 0,
   protocol_ids: 1,
   implementation_ids: 2
 };
 
-const object_type = {
+const ObjectType = {
   null: 0,
   base: 1,
   account: 2,
@@ -34,7 +34,7 @@ const object_type = {
   bet: 26
 };
 
-const impl_object_type = {
+const ImplObjctType = {
   global_property: 0,
   dynamic_global_property: 1,
   reserved0: 2,
@@ -59,13 +59,13 @@ const impl_object_type = {
   distributed_dividend_balance_data: 21
 };
 
-const vote_type = {
+const VoteType = {
   committee: 0,
   witness: 1,
   worker: 2
 };
 
-const operations = {
+const Operations = {
   transfer: 0,
   limit_order_create: 1,
   limit_order_cancel: 2,
@@ -142,11 +142,11 @@ const operations = {
 };
 
 const ChainTypes = {
-  reserved_spaces,
-  object_type,
-  impl_object_type,
-  vote_type,
-  operations
+  ReservedSpaces,
+  ObjectType,
+  ImplObjctType,
+  VoteType,
+  Operations
 };
 
 export default ChainTypes;

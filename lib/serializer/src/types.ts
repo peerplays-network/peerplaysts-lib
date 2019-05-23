@@ -581,8 +581,8 @@ Types.fixed_array = (count, st_operation) => {
 
 /* Supports instance numbers (11) or object types (1.2.11).  Object type
 Validation is enforced when an object type is used. */
-Types.id_type = (reserved_spaces, object_type) => {
-  v.required(reserved_spaces, 'reserved_spaces');
+Types.id_type = (ReservedSpaces, object_type) => {
+  v.required(ReservedSpaces, 'ReservedSpaces');
   v.required(object_type, 'object_type');
 
   let id_type_object = {
@@ -598,7 +598,7 @@ Types.id_type = (reserved_spaces, object_type) => {
 
       // convert 1.2.n into just n
       if (/^[0-9]+\.[0-9]+\.[0-9]+$/.test(object)) {
-        object = v.get_instance(reserved_spaces, object_type, object);
+        object = v.get_instance(ReservedSpaces, object_type, object);
       }
 
       b.writeVarint32(v.to_number(object));
@@ -614,13 +614,13 @@ Types.id_type = (reserved_spaces, object_type) => {
         return v.to_number(object);
       }
 
-      return v.get_instance(reserved_spaces, object_type, object);
+      return v.get_instance(ReservedSpaces, object_type, object);
     },
     toObject(object, debug = {}) {
-      let object_type_id = ChainTypes.object_type[object_type];
+      let object_type_id = ChainTypes.ObjectType[object_type];
 
       if (debug.use_default && object === undefined) {
-        return `${reserved_spaces}.${object_type_id}.0`;
+        return `${ReservedSpaces}.${object_type_id}.0`;
       }
 
       v.required(object);
@@ -630,10 +630,10 @@ Types.id_type = (reserved_spaces, object_type) => {
       }
 
       if (/^[0-9]+\.[0-9]+\.[0-9]+$/.test(object)) {
-        object = v.get_instance(reserved_spaces, object_type, object);
+        object = v.get_instance(ReservedSpaces, object_type, object);
       }
 
-      return `${reserved_spaces}.${object_type_id}.${object}`;
+      return `${ReservedSpaces}.${object_type_id}.${object}`;
     }
   };
 
@@ -642,11 +642,11 @@ Types.id_type = (reserved_spaces, object_type) => {
 
 Types.protocol_id_type = (name) => {
   v.required(name, 'name');
-  return Types.id_type(ChainTypes.reserved_spaces.protocol_ids, name);
+  return Types.id_type(ChainTypes.ReservedSpaces.protocol_ids, name);
 };
 
 Types.implementation_id_type = (name) => {
-  let result = Types.id_type(ChainTypes.reserved_spaces.implementation_ids, name);
+  let result = Types.id_type(ChainTypes.ReservedSpaces.implementation_ids, name);
   return result;
 };
 
